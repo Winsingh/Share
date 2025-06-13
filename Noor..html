@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>努尔·艾娜雅特·汗 - 间谍公主的传奇故事</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #1a237e;
+            --accent: #ff6f00;
+            --light: #e8eaf6;
+            --dark: #0d47a1;
+            --text: #212121;
+            --background: #f5f7ff;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--background);
+            overflow-x: hidden;
+            background-image: linear-gradient(to bottom right, #f5f7ff, #e3f2fd);
+        }
+        
+        /* 导航栏样式 */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--primary);
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 3px 0 15px rgba(0,0,0,0.1);
+        }
+        
+        .nav-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .nav-header h1 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+        
+        .nav-header p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .toc {
+            list-style: none;
+        }
+        
+        .toc li {
+            padding: 0;
+        }
+        
+        .toc a {
+            display: block;
+            padding: 12px 30px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .toc a:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .toc a.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .toc a::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+        }
+        
+        .toc a.active::before {
+            background: var(--accent);
+        }
+        
+        /* 主内容区域 */
+        .container {
+            margin-left: 250px;
+            max-width: 900px;
+            padding: 40px 30px 80px;
+        }
+        
+        /* 章节样式 */
+        section {
+            margin-bottom: 60px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            background: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 5px;
+            width: 100%;
+        }
+        
+        .chapter-1::before { background: linear-gradient(90deg, #8e24aa, #5e35b1); }
+        .chapter-2::before { background: linear-gradient(90deg, #5e35b1, #3949ab); }
+        .chapter-3::before { background: linear-gradient(90deg, #3949ab, #1e88e5); }
+        .chapter-4::before { background: linear-gradient(90deg, #1e88e5, #00acc1); }
+        .chapter-5::before { background: linear-gradient(90deg, #00acc1, #00897b); }
+        .chapter-6::before { background: linear-gradient(90deg, #00897b, #43a047); }
+        .chapter-7::before { background: linear-gradient(90deg, #43a047, #ffb300); }
+        
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, rgba(255,111,0,0.15), rgba(255,111,0,0.15));
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .quote {
+            background: var(--light);
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            position: relative;
+        }
+        
+        .quote::before {
+            content: """;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            font-size: 4rem;
+            color: rgba(26, 35, 126, 0.1);
+            font-family: Georgia, serif;
+        }
+        
+        /* 注释样式 */
+        .annotation {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            border-bottom: 1px dashed var(--accent);
+        }
+        
+        .annotation-text {
+            display: none;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .annotation:hover .annotation-text {
+            display: block;
+        }
+        
+        .annotation-text::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: var(--primary) transparent transparent transparent;
+        }
+        
+        /* 参考链接部分 */
+        .references {
+            margin-top: 60px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+        }
+        
+        .references h2 {
+            color: var(--dark);
+            margin-bottom: 25px;
+        }
+        
+        .references ul {
+            list-style-type: none;
+        }
+        
+        .references li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .references li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        
+        .references a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .references a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: var(--primary);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            nav {
+                width: 200px;
+            }
+            
+            .container {
+                margin-left: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                position: relative;
+                width: 100%;
+                height: auto;
+                max-height: 60vh;
+            }
+            
+            .container {
+                margin-left: 0;
+            }
+            
+            .nav-header {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航目录 -->
+    <nav>
+        <div class="nav-header">
+            <h1>努尔·艾娜雅特·汗</h1>
+            <p>间谍公主的传奇一生</p>
+        </div>
+        <ul class="toc">
+            <li><a href="#chapter1" class="active">莫斯科的星夜：公主的起点</a></li>
+            <li><a href="#chapter2">战火中的抉择：从诗人到特工</a></li>
+            <li><a href="#chapter3">笨拙的间谍：荒诞与幸运交织</a></li>
+            <li><a href="#chapter4">孤狼时刻：巴黎最后的电波</a></li>
+            <li><a href="#chapter5">背叛与囚笼：十个月的沉默</a></li>
+            <li><a href="#chapter6">达豪的黎明：自由高于生命</a></li>
+            <li><a href="#chapter7">雕像与星辰：迟来的铭记</a></li>
+            <li><a href="#references">参考资料</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <div class="container">
+        <!-- 章节1 -->
+        <section id="chapter1" class="chapter-1">
+            <h2><i class="fas fa-star"></i> 莫斯科的星夜：公主的起点</h2>
+            <p>1914年1月1日，莫斯科风雪呼啸，一个注定不平凡的生命在严寒中诞生。努尔·艾娜雅特·汗降生在这座北方之都，她的父亲是印度迈索尔王国的苏菲派穆斯林贵族，母亲则是来自美国的艺术家。这样的血脉注定了她一生的漂泊与传奇。</p>
+            
+            <p>7岁时，努尔随家人迁居巴黎，在塞纳河畔长大。她讲法语如同母语，弹得一手优美的竖琴，还创作了许多充满幻想的童话故事。在巴黎大学，她研究儿童心理学，成为一位温柔知性的学者。若不是战争的爆发，她本会以笔和音乐终老。</p>
+            
+            <div class="quote">
+                "若没有战争，她本会以笔和音乐终老。"
+            </div>
+            
+            <p>在巴黎的艺术氛围中，努尔逐渐成长为一位富有同情心和理想主义的青年。她的贵族血统没有让她远离普通人，反而使她更加关注社会的不公与苦难。这些特质将在未来的岁月里，塑造她非凡的人生选择。</p>
+            
+            <p class="annotation">
+                注：苏菲派是伊斯兰教的神秘主义派别
+                <span class="annotation-text">苏菲派强调通过个人体验接近真主，重视爱与宽容，这对努尔的精神世界有深远影响</span>
+            </p>
+        </section>
+        
+        <!-- 章节2 -->
+        <section id="chapter2" class="chapter-2">
+            <h2><i class="fas fa-crosshairs"></i> 战火中的抉择：从诗人到特工</h2>
+            <p>1940年，纳粹的铁蹄踏碎了巴黎的宁静。26岁的努尔搀扶家人挤上逃亡英国的最后一艘船。站在伦敦阴冷的街头，她看到征兵海报上醒目的大字——"为自由而战"。这一刻，她的人生轨迹彻底改变。</p>
+            
+            <p>英国皇家空军特别行动署（SOE）正在紧急招募双语特工。尽管努尔连枪都拿不稳，在训练中表现笨拙，教官批评她"情绪化、毫无特工天赋"，但她流利的法语在战时太过珍贵。1943年6月，她以<span class="highlight">代号"玛德琳"</span>空降到纳粹占领下的巴黎。</p>
+            
+            <div class="quote">
+                "尽管她连枪都拿不稳，培训官痛批她'笨拙、情绪化、毫无特工天赋'，但流利的法语太珍贵。"
+            </div>
+            
+            <p class="annotation">
+                注：SOE是二战期间英国建立的秘密组织
+                <span class="annotation-text">特别行动处(SOE)的任务是在敌占区进行间谍活动、破坏和援助抵抗运动</span>
+            </p>
+        </section>
+        
+        <!-- 章节3 -->
+        <section id="chapter3" class="chapter-3">
+            <h2><i class="fas fa-theater-masks"></i> 笨拙的间谍：荒诞与幸运交织</h2>
+            <p>努尔的间谍生涯始于一连串令人啼笑皆非的失误。第一次传递德军布防图时，她竟忘了暗号，在街头展开地图拦下路人挨个问："您要这个吗？"幸得抵抗组织成员急中生智，假装精神病院医生拽走她："抱歉，病人走失了！"</p>
+            
+            <p>还有一次在旅馆发完电报，她把密码本和全体成员名单落在床头。旅馆老板追出两条街才还给她，同伴们吓得魂飞魄散。最危险的是，她竟把工作室租在盖世太保总部隔壁，深夜发报按键声如敲铁钉，吵得整条街失眠。邻居抱怨连连，纳粹却灯下黑："谁敢这么嚣张？肯定不是间谍！"</p>
+            
+            <div class="quote">
+                "同事们摇头：'伦敦派来个糊涂公主。'但奇迹般，她总被运气拯救。"
+            </div>
+            
+            <p>这些看似灾难性的错误，却因为纳粹难以相信间谍会如此"业余"而让她一次次化险为夷。她的贵族气质和天真举止，反而成为最好的伪装。</p>
+        </section>
+        
+        <!-- 章节4 -->
+        <section id="chapter4" class="chapter-4">
+            <h2><i class="fas fa-wolf-pack-battalion"></i> 孤狼时刻：巴黎最后的电波</h2>
+            <p>1943年秋，叛徒德里考特出卖了整个巴黎情报网，数十名精英特工一夜被捕。当伦敦急令努尔撤退时，她第一次展现了惊人的固执："如果我也走，巴黎将再无声音。"</p>
+            
+            <p>她成了盟军在法国唯一的发报员，每夜蜷在阴影中敲击电键，将诺曼底防线情报、德军调度密报传向伦敦——这些情报后来改变了D-Day登陆的进程。在极度危险的环境中，她坚持了三个月，发送了超过100条关键信息。</p>
+            
+            <div class="quote">
+                "她成了盟军在法国唯一的发报员，每夜蜷在阴影中敲击电键，将诺曼底防线情报、德军调度密报传向伦敦——这些情报后来改变了D-Day登陆的进程。"
+            </div>
+            
+            <p class="annotation">
+                注：D-Day指1944年6月6日的诺曼底登陆
+                <span class="annotation-text">盟军在欧洲西线战场发起的大规模攻势，标志着二战的重要转折点</span>
+            </p>
+        </section>
+        
+        <!-- 章节5 -->
+        <section id="chapter5" class="chapter-5">
+            <h2><i class="fas fa-handcuffs"></i> 背叛与囚笼：十个月的沉默</h2>
+            <p>1944年6月，德里考特的妹妹蕾妮因嫉妒努尔受重用，向盖世太保告密，换来10万法郎赏金。努尔被捕时，纳粹在壁橱里搜出整本电报记录——她误将"谨慎处理"理解为"存档备查"。盖世太保狂喜："这蠢女人掌握着整个网络！"</p>
+            
+            <p>但敌人很快发现，撬开她的嘴比登天更难：审讯室中，她只对盖世太保头目凯菲说了一句："我不相信你。"此后十个月酷刑，再无一字。她两次越狱，一次抠松牢房砖缝爬出，一次用偷藏的叉子捅伤看守，虽未成功却震动集中营。</p>
+            
+            <div class="quote">
+                "鞭打、饥饿、冰水浇身…她蜷在血泊里默念苏菲派诗歌：'痛苦是光，照见神性。'"
+            </div>
+            
+            <p class="annotation">
+                注：盖世太保是纳粹德国的秘密警察
+                <span class="annotation-text">以残酷手段镇压抵抗运动而臭名昭著</span>
+            </p>
+        </section>
+        
+        <!-- 章节6 -->
+        <section id="chapter6" class="chapter-6">
+            <h2><i class="fas fa-sun"></i> 达豪的黎明：自由高于生命</h2>
+            <p>1944年9月12日，纳粹刽子手拉帕特将她拖到达豪集中营外的树林。被剥光衣服毒打后，枪口抵上她的额头。拉帕特吼叫："说！名单在哪！"</p>
+            
+            <p>她突然挺直脊背，用尽力气喊出："自由！"（Liberté！）枪响了。30岁的努尔倒在落叶中，远处传来盟军反攻的炮声——离巴黎解放仅差9天。</p>
+            
+            <div class="quote">
+                "她突然挺直脊背，用尽力气喊出：'自由！'（Liberté！）枪响了。30岁的努尔倒在落叶中，远处传来盟军反攻的炮声——离巴黎解放仅差9天。"
+            </div>
+            
+            <p>努尔牺牲时年仅30岁，她的英勇就义成为二战中最悲壮的一幕。就在她倒下后不久，盟军的坦克开进了巴黎，她为之奋斗的自由终于成为现实。</p>
+        </section>
+        
+        <!-- 章节7 -->
+        <section id="chapter7" class="chapter-7">
+            <h2><i class="fas fa-monument"></i> 雕像与星辰：迟来的铭记</h2>
+            <p>战后十五年，幸存囚犯的证词才让真相大白。英国追授她乔治十字勋章——平民最高英勇奖；法国颁发抵抗运动勋章。2012年，伦敦戈登广场立起她的铜像：短发飞扬，手握电台，眺望东方。</p>
+            
+            <p>在雕像揭幕仪式上，安妮公主含泪说："她证明了普通人如何成为非凡的英雄。"努尔的侄子轻语道："姑姑，他们终于知道——您不是'最笨的间谍'，而是暗夜中永不熄灭的星光。"</p>
+            
+            <div class="quote">
+                "她证明了普通人如何成为非凡的英雄。"
+            </div>
+            
+            <p>今天，努尔·艾娜雅特·汗的故事被写进历史教科书，她的勇气跨越了种族、信仰和国籍的界限，成为全人类的精神财富。在伦敦的铜像前，人们常能看到新鲜的鲜花——这是对她永不过时的致敬。</p>
+        </section>
+        
+        <!-- 参考资料 -->
+        <section id="references" class="references">
+            <h2><i class="fas fa-book"></i> 参考资料</h2>
+            <ul>
+                <li><a href="https://www.nationalarchives.gov.uk/" target="_blank">英国国家档案馆 - SOE解密文件</a></li>
+                <li>Basu, S. (2006). <i>Spy Princess: The Life of Noor Inayat Khan</i>. Sutton Publishing</li>
+                <li><a href="https://www.iwm.org.uk/history/gallery-her-special-operations-executive" target="_blank">帝国战争博物馆 - 特别行动处女性特工档案</a></li>
+                <li>纪录片: <i>Enemy of the Reich: The Noor Inayat Khan Story</i> (2014)</li>
+                <li>BBC History: <a href="https://www.bbc.com/history/historic_figures/inayat_khan_noor.shtml" target="_blank">Noor Inayat Khan - 二战中的穆斯林女英雄</a></li>
+                <li>Shrabani Basu (2008). <i>Spy Princess: The Life of Noor Inayat Khan</i>. The History Press</li>
+            </ul>
+        </section>
+        
+        <footer>
+            <p>努尔·艾娜雅特·汗 (1914-1944) | 网页设计致敬这位勇敢的女性 | 资料来源于历史档案和权威传记</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+                
+                // 更新活动链接
+                document.querySelectorAll('.toc a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // 滚动时高亮当前章节
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
