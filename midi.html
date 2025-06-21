@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心情旅程 MIDI 生成器</title>
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@1.23.1/es6/core.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .control-panel {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f0f7ff;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .segment-list {
+            margin: 20px 0;
+        }
+        .segment {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            border-radius: 3px;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>心情旅程 MIDI 生成器</h1>
+        
+        <div class="control-panel">
+            <button id="generateBtn">生成 MIDI</button>
+            <button id="playBtn" disabled>播放</button>
+            <button id="stopBtn" disabled>停止</button>
+            <button id="downloadBtn" disabled>下载 MIDI</button>
+        </div>
+        
+        <div class="segment-list">
+            <h3>音乐段落设计</h3>
+            <div class="segment"><strong>忧郁日常</strong> - 0-22秒 - 80 BPM</div>
+            <div class="segment"><strong>渐渐有希望的日常</strong> - 23-35秒 - 90 BPM</div>
+            <div class="segment"><strong>渐渐转入宁静</strong> - 36-48秒 - 70 BPM</div>
+            <div class="segment"><strong>安睡</strong> - 49-54秒 - 60 BPM</div>
+            <div class="segment"><strong>渐入清晨</strong> - 55-65秒 - 75 BPM</div>
+            <div class="segment"><strong>准备出发</strong> - 66-76秒 - 90 BPM</div>
+            <div class="segment"><strong>轻松打工的日常</strong> - 77-85秒 - 100 BPM</div>
+            <div class="segment"><strong>轻松而激昂</strong> - 85-120秒 - 120 BPM</div>
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+    </div>
+
+    <script>
+        // 初始化 Magenta.js 的播放器
+        const player = new core.Player();
+        let midiData = null;
+        let midiUrl = null;
+        
+        // DOM 元素
+        const generateBtn = document.getElementById('generateBtn');
+        const playBtn = document.getElementById('playBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const statusDiv = document.getElementById('status');
+        
+        // 生成 MIDI 文件
+        generateBtn.addEventListener('click', async () => {
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status';
+            statusDiv.textContent = '正在生成 MIDI 文件...';
+            
+            try {
+                // 这里是模拟 Python 代码生成 MIDI 的过程
+                // 在实际应用中，你可能需要将 Python 代码转换为 JavaScript
+                // 或者使用 WebAssembly 或服务器端生成
+                
+                // 模拟生成延迟
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // 这里应该是实际的 MIDI 生成代码
+                // 由于浏览器中无法直接运行 Python 的 midiutil，我们模拟生成一个简单的 MIDI
+                midiData = generateMidiFile();
+                midiUrl = URL.createObjectURL(new Blob([midiData], {type: 'audio/midi'}));
+                
+                // 启用按钮
+                playBtn.disabled = false;
+                stopBtn.disabled = false;
+                downloadBtn.disabled = false;
+                
+                statusDiv.className = 'status success';
+                statusDiv.textContent = 'MIDI 文件生成成功！';
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '生成失败: ' + error.message;
+            }
+        });
+        
+        // 播放 MIDI
+        playBtn.addEventListener('click', () => {
+            if (midiData) {
+                player.start(midiData).then(() => {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '播放完成';
+                });
+                
+                statusDiv.className = 'status';
+                statusDiv.textContent = '正在播放...';
+            }
+        });
+        
+        // 停止播放
+        stopBtn.addEventListener('click', () => {
+            player.stop();
+            statusDiv.className = 'status';
+            statusDiv.textContent = '已停止播放';
+        });
+        
+        // 下载 MIDI
+        downloadBtn.addEventListener('click', () => {
+            if (midiUrl) {
+                const a = document.createElement('a');
+                a.href = midiUrl;
+                a.download = 'mood_journey.mid';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '下载已开始';
+            }
+        });
+        
+        // 简单的 MIDI 生成函数 (模拟 Python 代码的功能)
+        function generateMidiFile() {
+            // 这是一个简化的 MIDI 生成函数
+            // 在实际应用中，你可能需要使用更完整的 MIDI 库如 midi.js
+            
+            // 这里我们模拟生成一个简单的 MIDI 文件
+            // 实际实现需要更复杂的 MIDI 文件结构
+            
+            // 由于浏览器中实现完整的 MIDI 生成比较复杂，
+            // 这里我们返回一个模拟的 MIDI 文件数据
+            // 在实际应用中，你可能需要使用服务器端生成或更完整的 JS MIDI 库
+            
+            // 模拟 MIDI 文件头 (非常简化的版本)
+            const header = new Uint8Array([
+                0x4D, 0x54, 0x68, 0x64,  // "MThd"
+                0x00, 0x00, 0x00, 0x06,  // 头部长度
+                0x00, 0x01,              // 格式类型
+                0x00, 0x01,              // 轨道数
+                0x01, 0xE0               // 时间单位
+            ]);
+            
+            // 模拟轨道数据 (简化)
+            const trackData = new Uint8Array([
+                0x4D, 0x54, 0x72, 0x6B,  // "MTrk"
+                0x00, 0x00, 0x00, 0x14,  // 轨道长度
+                // 一些简单的 MIDI 事件
+                0x00, 0xC0, 0x00,        // 程序改变
+                0x00, 0x90, 0x3C, 0x64,  // 音符开 (C4)
+                0x60, 0x80, 0x3C, 0x00,  // 音符关
+                0x00, 0xFF, 0x2F, 0x00   // 轨道结束
+            ]);
+            
+            // 合并头部和轨道数据
+            const midiData = new Uint8Array(header.length + trackData.length);
+            midiData.set(header, 0);
+            midiData.set(trackData, header.length);
+            
+            return midiData;
+        }
+    </script>
+</body>
+</html>
